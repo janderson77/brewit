@@ -1,0 +1,86 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "User Schema",
+    "description": "Schema for new users.",
+    "default": {},
+    "examples": [
+        {
+            "username": "myusername",
+            "password": "suuupersecret11",
+            "firstname": "Bob",
+            "lastname": "Dole",
+            "email": "email@gmail.com",
+            "profileimgurl": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/funny-dog-halloween-costumes-1600276912.jpg"
+        }
+    ],
+    "required": [
+        "username",
+        "password",
+        "email"
+    ],
+    "properties": {
+        "username": {
+            "$id": "#/properties/username",
+            "type": "string",
+            "title": "The username schema",
+            "description": "The user's desired username.",
+            "default": "",
+            "examples": [
+                "myusername"
+            ]
+        },
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
+            "description": "The user's desired password.",
+            "default": "",
+            "examples": [
+                "suuupersecret11"
+            ]
+        },
+        "firstname": {
+            "$id": "#/properties/firstname",
+            "type": "string",
+            "title": "The firstname schema",
+            "description": "The user's first name.",
+            "default": "",
+            "examples": [
+                "Bob"
+            ]
+        },
+        "lastname": {
+            "$id": "#/properties/lastname",
+            "type": "string",
+            "title": "The lastname schema",
+            "description": "The user's last name.",
+            "default": "",
+            "examples": [
+                "Dole"
+            ]
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "The email schema",
+            "description": "The user's email address.",
+            "default": "",
+            "examples": [
+                "email@gmail.com"
+            ]
+        },
+        "profileimgurl": {
+            "$id": "#/properties/profileimgurl",
+            "type": "string",
+            "title": "The profileimgurl schema",
+            "description": "The user's desired profile image URL.",
+            "default": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/funny-dog-halloween-costumes-1600276912.jpg",
+            "examples": [
+                "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/funny-dog-halloween-costumes-1600276912.jpg"
+            ]
+        }
+    },
+    "additionalProperties": false
+}
