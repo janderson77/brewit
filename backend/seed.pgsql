@@ -49,7 +49,7 @@ CREATE TABLE brewnotes (
 
 CREATE TABLE brewsteps (
     stepid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    steptype TEXT NOT NULL, -- regular step or final step
+    isfinalstep BOOLEAN NOT NULL, -- regular step is false, final step is true
     stepdate DATE DEFAULT NOW(),
     stepstartgravity FLOAT NOT NULL,
     stependgravity FLOAT NOT NULL,
