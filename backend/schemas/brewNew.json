@@ -1,0 +1,176 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "New brew schema",
+    "description": "The schema for a new brew.",
+    "default": {},
+    "examples": [
+        {
+            "brewname": "Viking's Blood Mead",
+            "brewstartdate": "2012-04-23T18:25:43.511Z",
+            "brewtype": "Mead",
+            "brewprimarycontainer": 1,
+            "brewsecondarycontainer": 2,
+            "brewyeast": "Lalvin 71b",
+            "brewingredients": [
+                "3lbs frozen cherries",
+                "1lbs dried cherries",
+                "1 cinnamon stick"
+            ],
+            "brewadditives": [
+                "3tsp fermaid O",
+                "Wine Tannins"
+            ],
+            "brewstartinggravity": 1.1,
+            "brewstartingtemp": 86.6
+        }
+    ],
+    "required": [
+        "brewname",
+        "brewtype"
+    ],
+    "properties": {
+        "brewname": {
+            "$id": "#/properties/brewname",
+            "type": "string",
+            "title": "The brewname schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Viking's Blood Mead"
+            ]
+        },
+        "brewstartdate": {
+            "$id": "#/properties/brewstartdate",
+            "type": "string",
+            "title": "The brewstartdate schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "2012-04-23T18:25:43.511Z"
+            ]
+        },
+        "brewtype": {
+            "$id": "#/properties/brewtype",
+            "type": "string",
+            "title": "The brewtype schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Mead"
+            ]
+        },
+        "brewprimarycontainer": {
+            "$id": "#/properties/brewprimarycontainer",
+            "type": "integer",
+            "title": "The brewprimarycontainer schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                1
+            ]
+        },
+        "brewsecondarycontainer": {
+            "$id": "#/properties/brewsecondarycontainer",
+            "type": "integer",
+            "title": "The brewsecondarycontainer schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                2
+            ]
+        },
+        "brewyeast": {
+            "$id": "#/properties/brewyeast",
+            "type": "string",
+            "title": "The brewyeast schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Lalvin 71b"
+            ]
+        },
+        "brewingredients": {
+            "$id": "#/properties/brewingredients",
+            "type": "array",
+            "title": "The brewingredients schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+                [
+                    "3lbs frozen cherries",
+                    "1lbs dried cherries"
+                ]
+            ],
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/brewingredients/items",
+                "anyOf": [
+                    {
+                        "$id": "#/properties/brewingredients/items/anyOf/0",
+                        "type": "string",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "3lbs frozen cherries",
+                            "1lbs dried cherries"
+                        ]
+                    }
+                ]
+            }
+        },
+        "brewadditives": {
+            "$id": "#/properties/brewadditives",
+            "type": "array",
+            "title": "The brewadditives schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+                [
+                    "3tsp fermaid O",
+                    "Wine Tannins"
+                ]
+            ],
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/brewadditives/items",
+                "anyOf": [
+                    {
+                        "$id": "#/properties/brewadditives/items/anyOf/0",
+                        "type": "string",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "3tsp fermaid O",
+                            "Wine Tannins"
+                        ]
+                    }
+                ]
+            }
+        },
+        "brewstartinggravity": {
+            "$id": "#/properties/brewstartinggravity",
+            "type": "number",
+            "title": "The brewstartinggravity schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                1.1
+            ]
+        },
+        "brewstartingtemp": {
+            "$id": "#/properties/brewstartingtemp",
+            "type": "number",
+            "title": "The brewstartingtemp schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                86.6
+            ]
+        }
+    },
+    "additionalProperties": false
+}
