@@ -3,54 +3,51 @@ CREATE DATABASE brewit_db;
 
 \c brewit_db;
 
-CREATE TABLE "Users" (
+CREATE TABLE "users" (
     "userid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "username" VARCHAR(20) NOT NULL,
     "email" TEXT   NOT NULL,
     "password" TEXT   NOT NULL,
     "firstname" TEXT   NOT NULL,
     "lastname" TEXT   NOT NULL,
-    "profileimgurl" TEXT DEFAULT "https://media.npr.org/assets/img/2021/08/17/gettyimages-135773550-bb02ff79dd836d6e4170d4bc555423f24fa29d5e.jpg"
+    "profileimgurl" TEXT DEFAULT "https://media.npr.org/assets/img/2021/08/17/gettyimages-135773550-bb02ff79dd836d6e4170d4bc555423f24fa29d5e.jpg",
+    "is_admin" BOOLEAN DEFAULT false,
+    UNIQUE("username", "email")
 );
 
-CREATE TABLE "Brews" (
+CREATE TABLE "brewtypes" (
+    "brewtypeid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "brewtypename" TEXT   NOT NULL,
+    "brewtypemainingredient" TEXT   NOT NULL
+);
+
+CREATE TABLE "containers" (
+    "containerid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "containername" TEXT   NOT NULL,
+    "containersize" FLOAT   NOT NULL,
+    "containerimgurl" TEXT   NOT NULL
+);
+
+CREATE TABLE "brews" (
     "brewid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "brewname" TEXT   NOT NULL,
+    "brewname" TEXT NOT NULL,
     "brewstartdate" DATE DEFAULT NOW(),
-    "brewtype" INTEGER   NOT NULL,
-    "brewprimarycontainer" INTEGER   NOT NULL,
+    "brewtype" INTEGER NOT NULL,
+    "brewprimarycontainer" INTEGER,
     "brewsecondarycontainer" INTEGER,
-    "brewyeast" TEXT   NOT NULL,
-    "brewingredients" TEXT[] NOT NULL,
-    "brewadditives" TEXT[] NOT NULL,
-    "brewstartinggravity" float   NOT NULL,
+    "brewyeast" TEXT,
+    "brewingredients" TEXT[],
+    "brewadditives" TEXT[],
+    "brewstartinggravity" float,
     "brewstartingtemp" text
 );
 
-CREATE TABLE "User_Brews" (
-    "userid" INTEGER   NOT NULL,
-    "brewid" INTEGER   NOT NULL
+CREATE TABLE "brewnotes" (
+    "brewnotesid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "brewnotesbody" TEXT   NOT NULL
 );
 
-CREATE TABLE "Brews_BrewSteps" (
-    "brewid" INTEGER   NOT NULL,
-    "brewstepid" INTEGER   NOT NULL
-);
-
-CREATE TABLE "Brews_BrewNotes" (
-    "brewid" INTEGER   NOT NULL,
-    "brewnotesid" INTEGER   NOT NULL
-);
-
-CREATE TABLE "BrewRatings" (
-    "userid" INTEGER   NOT NULL,
-    "brewid" INTEGER   NOT NULL,
-    -- 1-5
-    "brewstarrating" INTEGER   NOT NULL,
-    "brewreview" TEXT   NOT NULL
-);
-
-CREATE TABLE "BrewSteps" (
+CREATE TABLE "brewsteps" (
     "stepid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- regular step or final step
     "steptype" TEXT NOT NULL,
@@ -60,54 +57,53 @@ CREATE TABLE "BrewSteps" (
     "stepnotes" TEXT   NOT NULL
 );
 
-CREATE TABLE "BrewTypes" (
-    "brewtypeid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "brewtypename" TEXT   NOT NULL,
-    "brewtypemainingredient" TEXT   NOT NULL
+CREATE TABLE "user_brews" (
+    "userid" INTEGER REFERENCES "users" ON DELETE CASCADE,
+    "brewid" INTEGER REFERENCES "brews" ON DELETE CASCADE
 );
 
-CREATE TABLE "BrewNotes" (
-    "brewnotesid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "brewnotesbody" TEXT   NOT NULL
+CREATE TABLE "brews_brewsteps" (
+    "brewid" INTEGER   NOT NULL,
+    "brewstepid" INTEGER   NOT NULL
 );
 
-CREATE TABLE "Containers" (
-    "containerid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "containername" TEXT   NOT NULL,
-    "containersize" FLOAT   NOT NULL,
-    "containerimgurl" TEXT   NOT NULL
+CREATE TABLE "brews_brewnotes" (
+    "brewid" INTEGER   NOT NULL,
+    "brewnotesid" INTEGER   NOT NULL
 );
 
-ALTER TABLE "Brews" ADD CONSTRAINT "fk_Brews_brewtype" FOREIGN KEY("brewtype")
-REFERENCES "BrewTypes" ("brewtypeid");
+CREATE TABLE "brewratings" (
+    "userid" INTEGER   NOT NULL,
+    "brewid" INTEGER   NOT NULL,
+    -- 1-5
+    "brewstarrating" INTEGER   NOT NULL,
+    "brewreview" TEXT   NOT NULL
+);
 
-ALTER TABLE "Brews" ADD CONSTRAINT "fk_Brews_brewprimarycontainer" FOREIGN KEY("brewprimarycontainer")
-REFERENCES "Containers" ("containerid");
+ALTER TABLE "brews" ADD CONSTRAINT "fk_Brews_brewtype" FOREIGN KEY("brewtype")
+REFERENCES "brewtypes" ("brewtypeid");
 
-ALTER TABLE "Brews" ADD CONSTRAINT "fk_Brews_brewsecondarycontainer" FOREIGN KEY("brewsecondarycontainer")
-REFERENCES "Containers" ("containerid");
+ALTER TABLE "brews" ADD CONSTRAINT "fk_Brews_brewprimarycontainer" FOREIGN KEY("brewprimarycontainer")
+REFERENCES "containers" ("containerid");
 
-ALTER TABLE "User_Brews" ADD CONSTRAINT "fk_User_Brews_userid" FOREIGN KEY("userid")
-REFERENCES "Users" ("userid");
+ALTER TABLE "brews" ADD CONSTRAINT "fk_Brews_brewsecondarycontainer" FOREIGN KEY("brewsecondarycontainer")
+REFERENCES "containers" ("containerid");
 
-ALTER TABLE "User_Brews" ADD CONSTRAINT "fk_User_Brews_brewid" FOREIGN KEY("brewid")
-REFERENCES "Brews" ("brewid");
+ALTER TABLE "brews_brewsteps" ADD CONSTRAINT "fk_Brews_BrewSteps_brewid" FOREIGN KEY("brewid")
+REFERENCES "brews" ("brewid");
 
-ALTER TABLE "Brews_BrewSteps" ADD CONSTRAINT "fk_Brews_BrewSteps_brewid" FOREIGN KEY("brewid")
-REFERENCES "Brews" ("brewid");
+ALTER TABLE "brews_brewsteps" ADD CONSTRAINT "fk_Brews_BrewSteps_brewstepid" FOREIGN KEY("brewstepid")
+REFERENCES "brewsteps" ("stepid");
 
-ALTER TABLE "Brews_BrewSteps" ADD CONSTRAINT "fk_Brews_BrewSteps_brewstepid" FOREIGN KEY("brewstepid")
-REFERENCES "BrewSteps" ("stepid");
+ALTER TABLE "brews_brewnotes" ADD CONSTRAINT "fk_Brews_BrewNotes_brewid" FOREIGN KEY("brewid")
+REFERENCES "brews" ("brewid");
 
-ALTER TABLE "Brews_BrewNotes" ADD CONSTRAINT "fk_Brews_BrewNotes_brewid" FOREIGN KEY("brewid")
-REFERENCES "Brews" ("brewid");
+ALTER TABLE "brews_brewnotes" ADD CONSTRAINT "fk_Brews_BrewNotes_brewnotesid" FOREIGN KEY("brewnotesid")
+REFERENCES "brewnotes" ("brewnotesid");
 
-ALTER TABLE "Brews_BrewNotes" ADD CONSTRAINT "fk_Brews_BrewNotes_brewnotesid" FOREIGN KEY("brewnotesid")
-REFERENCES "BrewNotes" ("brewnotesid");
+ALTER TABLE "brewratings" ADD CONSTRAINT "fk_BrewRatings_userid" FOREIGN KEY("userid")
+REFERENCES "users" ("userid");
 
-ALTER TABLE "BrewRatings" ADD CONSTRAINT "fk_BrewRatings_userid" FOREIGN KEY("userid")
-REFERENCES "Users" ("userid");
-
-ALTER TABLE "BrewRatings" ADD CONSTRAINT "fk_BrewRatings_brewid" FOREIGN KEY("brewid")
-REFERENCES "Brews" ("brewid");
+ALTER TABLE "brewratings" ADD CONSTRAINT "fk_BrewRatings_brewid" FOREIGN KEY("brewid")
+REFERENCES "brews" ("brewid");
 
