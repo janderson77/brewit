@@ -1,9 +1,9 @@
-DROP DATABSE IF EXISTS brewit_db;
+DROP DATABASE IF EXISTS brewit_db;
 CREATE DATABASE brewit_db;
 
 \c brewit_db;
 
-CREATE TABLE "User" (
+CREATE TABLE "Users" (
     "userid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "username" VARCHAR(20) NOT NULL,
     "email" TEXT   NOT NULL,
@@ -16,13 +16,13 @@ CREATE TABLE "User" (
 CREATE TABLE "Brews" (
     "brewid" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "brewname" TEXT   NOT NULL,
-    "brewstartdate" date   NOT NULL,
+    "brewstartdate" DATE DEFAULT NOW(),
     "brewtype" INTEGER   NOT NULL,
     "brewprimarycontainer" INTEGER   NOT NULL,
     "brewsecondarycontainer" INTEGER,
     "brewyeast" TEXT   NOT NULL,
-    "brewingredients" arr   NOT NULL,
-    "brewadditives" arr   NOT NULL,
+    "brewingredients" TEXT[] NOT NULL,
+    "brewadditives" TEXT[] NOT NULL,
     "brewstartinggravity" float   NOT NULL,
     "brewstartingtemp" text
 );
@@ -88,7 +88,7 @@ ALTER TABLE "Brews" ADD CONSTRAINT "fk_Brews_brewsecondarycontainer" FOREIGN KEY
 REFERENCES "Containers" ("containerid");
 
 ALTER TABLE "User_Brews" ADD CONSTRAINT "fk_User_Brews_userid" FOREIGN KEY("userid")
-REFERENCES "User" ("userid");
+REFERENCES "Users" ("userid");
 
 ALTER TABLE "User_Brews" ADD CONSTRAINT "fk_User_Brews_brewid" FOREIGN KEY("brewid")
 REFERENCES "Brews" ("brewid");
@@ -106,7 +106,7 @@ ALTER TABLE "Brews_BrewNotes" ADD CONSTRAINT "fk_Brews_BrewNotes_brewnotesid" FO
 REFERENCES "BrewNotes" ("brewnotesid");
 
 ALTER TABLE "BrewRatings" ADD CONSTRAINT "fk_BrewRatings_userid" FOREIGN KEY("userid")
-REFERENCES "User" ("userid");
+REFERENCES "Users" ("userid");
 
 ALTER TABLE "BrewRatings" ADD CONSTRAINT "fk_BrewRatings_brewid" FOREIGN KEY("brewid")
 REFERENCES "Brews" ("brewid");
