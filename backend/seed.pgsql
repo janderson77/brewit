@@ -6,10 +6,10 @@ CREATE DATABASE brewit_db;
 CREATE TABLE users (
     userid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(20) NOT NULL,
-    email TEXT   NOT NULL,
-    password TEXT   NOT NULL,
-    firstname TEXT   NOT NULL,
-    lastname TEXT   NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    firstname TEXT NOT NULL,
+    lastname TEXT NOT NULL,
     profileimgurl TEXT,
     is_admin BOOLEAN DEFAULT false,
     UNIQUE(username, email)
@@ -17,15 +17,15 @@ CREATE TABLE users (
 
 CREATE TABLE brewtypes (
     brewtypeid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    brewtypename TEXT   NOT NULL,
-    brewtypemainingredient TEXT   NOT NULL
+    brewtypename TEXT NOT NULL,
+    brewtypemainingredient TEXT NOT NULL
 );
 
 CREATE TABLE containers (
     containerid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    containername TEXT   NOT NULL,
-    containersize FLOAT   NOT NULL,
-    containerimgurl TEXT   NOT NULL
+    containername TEXT NOT NULL,
+    containersize FLOAT NOT NULL,
+    containerimgurl TEXT NOT NULL
 );
 
 CREATE TABLE brews (
@@ -44,7 +44,7 @@ CREATE TABLE brews (
 
 CREATE TABLE brewnotes (
     brewnotesid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    brewnotesbody TEXT   NOT NULL
+    brewnotesbody TEXT NOT NULL
 );
 
 CREATE TABLE brewsteps (
@@ -52,9 +52,9 @@ CREATE TABLE brewsteps (
     -- regular step or final step
     steptype TEXT NOT NULL,
     stepdate DATE DEFAULT NOW(),
-    stepstartgravity FLOAT   NOT NULL,
-    stependgravity FLOAT   NOT NULL,
-    stepnotes TEXT   NOT NULL
+    stepstartgravity FLOAT NOT NULL,
+    stependgravity FLOAT NOT NULL,
+    stepnotes TEXT NOT NULL
 );
 
 CREATE TABLE user_brews (
