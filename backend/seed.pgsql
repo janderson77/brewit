@@ -49,8 +49,7 @@ CREATE TABLE brewnotes (
 
 CREATE TABLE brewsteps (
     stepid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    -- regular step or final step
-    steptype TEXT NOT NULL,
+    steptype TEXT NOT NULL, -- regular step or final step
     stepdate DATE DEFAULT NOW(),
     stepstartgravity FLOAT NOT NULL,
     stependgravity FLOAT NOT NULL,
@@ -75,7 +74,6 @@ CREATE TABLE brews_brewnotes (
 CREATE TABLE brewratings (
     userid INTEGER REFERENCES users,
     brewid INTEGER REFERENCES brews ON DELETE CASCADE,
-    -- 1-5
-    brewstarrating INTEGER NOT NULL,
+    brewstarrating INTEGER NOT NULL, -- 1-5
     brewreview TEXT NOT NULL
 );
