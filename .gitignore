@@ -1,4 +1,3 @@
 brewit_app.txt
 backend/node_modules
-backend/seed.pgsql
 backend/package-lock.json
