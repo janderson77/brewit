@@ -24,7 +24,8 @@ CREATE TABLE brewtypes (
 CREATE TABLE containers (
     containerid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     containername TEXT NOT NULL,
-    containersize FLOAT NOT NULL,
+    containersize FLOAT NOT NULL, --In gallons
+    containerdescription TEXT,
     containerimgurl TEXT NOT NULL
 );
 
