@@ -40,6 +40,42 @@ class User{
 
         return result.rows;
     };
+
+    static async authenticate(data) {
+        const findUserResults = await db.query(
+            `
+            SELECT userid,
+                    username,
+                    password,
+                    first_name,
+                    last_name,
+                    email,
+                    profileimgurl
+            FROM users
+            WHERE email = $1
+            `,
+            [data.email]
+        );
+
+        const user = findUserResults.rows[0];
+
+        if(user){
+            const isCorrectPassword = await bcrypt.compare(data.password, user.password);
+            if(isCorrectPassword) {
+                delete user.password;
+
+                // Add function to get user brews
+                // Add function to get user reviews
+                // Add function to get user saved recipes
+
+                return user;
+            };
+        };
+
+        const invalidPassword = new Error("Invalid Credentials");
+        invalidPassword.status = 401;
+        throw invalidPassword
+    };
 };
 
 module.exports = User;

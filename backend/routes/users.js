@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require("../models/user");
 const { validate } = require("jsonschema");
 
-const {userNewSchema} = require("../schemas/index");
+const {userNewSchema, userAuthSchema} = require("../schemas/index");
 
 const createToken = require("../helpers/createToken")
 
@@ -30,5 +30,26 @@ router.post("/register", async function(req, res, next){
         return next(e)
     }
 });
+
+router.post("/login", async function(req, res, next){
+    try{
+        const isValid = validate(req.body, userAuthSchema);
+
+        if(!isValid.valid){
+            return next({
+                status: 400,
+                message: isValid.errors.map(e => e.stack)
+            });
+        };
+
+        const user = await User.authenticate(req.body);
+        const token = createToken(user);
+        user._token = token;
+
+        return res.status(200).json(user)
+    }catch(e){
+        return next(e)
+    }
+})
 
 module.exports = router;
