@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The rating schema",
+    "description": "The schema for submitting a rating for a brew.",
+    "default": {},
+    "examples": [
+        {
+            "userid": 10,
+            "brewid": 234,
+            "brewstarrating": 4,
+            "brewreview": "The recipe was pretty easy to follow, but the end result was not as good as the author made it out to be. It WAS good, just not life altering"
+        }
+    ],
+    "required": [
+        "userid",
+        "brewid",
+        "brewstarrating"
+    ],
+    "properties": {
+        "userid": {
+            "$id": "#/properties/userid",
+            "type": "integer",
+            "title": "The userid schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                10
+            ]
+        },
+        "brewid": {
+            "$id": "#/properties/brewid",
+            "type": "integer",
+            "title": "The brewid schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                234
+            ]
+        },
+        "brewstarrating": {
+            "$id": "#/properties/brewstarrating",
+            "type": "integer",
+            "title": "The brewstarrating schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                4
+            ]
+        },
+        "brewreview": {
+            "$id": "#/properties/brewreview",
+            "type": "string",
+            "title": "The brewreview schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "The recipe was pretty easy to follow, but the end result was not as good as the author made it out to be. It WAS good, just not life altering"
+            ]
+        }
+    },
+    "additionalProperties": false
+}
