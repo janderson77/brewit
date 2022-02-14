@@ -25,7 +25,7 @@ router.post("/register", async function(req, res, next){
         const newUser = await User.register(req.body);
         const token = createToken(newUser);
         newUser[0]._token = token;
-        return res.status(201).json(newUser);
+        return res.status(201).json(newUser[0]);
     }catch(e){
         return next(e)
     }
