@@ -24,9 +24,11 @@ router.post("/register", async function(req, res, next){
 
         const newUser = await User.register(req.body);
         const token = createToken(newUser);
-        newUser._token = token;
+        newUser[0]._token = token;
         return res.status(201).json(newUser);
     }catch(e){
         return next(e)
     }
-})
+});
+
+module.exports = router;

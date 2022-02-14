@@ -9,8 +9,8 @@
         {
             "username": "myusername",
             "password": "suuupersecret11",
-            "firstname": "Bob",
-            "lastname": "Dole",
+            "first_name": "Bob",
+            "last_name": "Dole",
             "email": "email@gmail.com",
             "profileimgurl": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/funny-dog-halloween-costumes-1600276912.jpg"
         }
@@ -41,7 +41,7 @@
                 "suuupersecret11"
             ]
         },
-        "firstname": {
+        "first_name": {
             "$id": "#/properties/firstname",
             "type": "string",
             "title": "The firstname schema",
@@ -51,7 +51,7 @@
                 "Bob"
             ]
         },
-        "lastname": {
+        "last_name": {
             "$id": "#/properties/lastname",
             "type": "string",
             "title": "The lastname schema",

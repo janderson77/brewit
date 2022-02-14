@@ -8,8 +8,8 @@ CREATE TABLE users (
     username VARCHAR(20) NOT NULL,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
-    firstname TEXT NOT NULL,
-    lastname TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     profileimgurl TEXT,
     is_admin BOOLEAN DEFAULT false,
     UNIQUE(username, email)
