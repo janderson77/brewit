@@ -2,11 +2,13 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "http://example.com/example.json",
     "type": "object",
-    "title": "Brew step schema",
-    "description": "Brew step schema.",
+    "title": "The schema to edit a brew step",
+    "description": "The schema to edit a brew step.",
     "default": {},
     "examples": [
         {
+            "brewid": 1,
+            "brewstepid": 1,
             "isfinalstep": false,
             "stepdate": "2012-04-23T18:25:43.511Z",
             "stepstartgravity": 1.01,
@@ -14,8 +16,31 @@
             "stepnotes": "Ending gravity at 1.010. Added 1/2lbs honey."
         }
     ],
-    "required": [],
+    "required": [
+        "brewid",
+        "brewstepid"
+    ],
     "properties": {
+        "brewid": {
+            "$id": "#/properties/brewid",
+            "type": "integer",
+            "title": "The brewid schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                1
+            ]
+        },
+        "brewstepid": {
+            "$id": "#/properties/brewstepid",
+            "type": "integer",
+            "title": "The brewstepid schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                1
+            ]
+        },
         "isfinalstep": {
             "$id": "#/properties/isfinalstep",
             "type": "boolean",
