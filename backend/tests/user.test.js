@@ -57,7 +57,7 @@ describe('POST /users Registrations', () => {
         expect(res.body.message).toBe('Password field cannot be blank');
     })
 
-    test('Does not create a user with no username', async() => {
+    test('Does not create a user if no username', async() => {
         let noUsernameUser = {
             password: "Testpassword1!",
             email: "test2@test.com",
