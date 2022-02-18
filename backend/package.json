@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose --runInBand",
     "seed": "node seed.pgsql"
   },
   "keywords": [],
@@ -20,5 +20,9 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
   }
 }

@@ -5,16 +5,49 @@ const BCRYPT_WORK_FACTOR = 10;
 
 class User{
     static async register(data){
-        const duplicateCheck = await db.query(
+        if(data.username.length < 1){
+            const err = new Error(
+                "Username field cannot be blank"
+            );
+            err.status = 400;
+            throw err;
+        };
+
+        if(data.password.length < 1){
+            const err = new Error(
+                "Password field cannot be blank"
+            );
+            err.status = 400;
+            throw err;
+        };
+
+        const duplicateUsernameCheck = await db.query(
             `SELECT username
             FROM users
             WHERE username = $1`,
             [data.username]
         );
 
-        if(duplicateCheck.rows[0]) {
+        const duplicateEmailCheck = await db.query(
+            `
+            SELECT email
+            FROM users
+            WHERE email = $1
+            `,
+            [data.email]
+        );
+
+        if(duplicateUsernameCheck.rows[0]) {
             const err = new Error(
                 `There already exists a user with username '${data.username}`
+            );
+            err.status = 409;
+            throw err;
+        }
+
+        if(duplicateEmailCheck.rows[0]){
+            const err = new Error(
+                "This email address is already in use"
             );
             err.status = 409;
             throw err;

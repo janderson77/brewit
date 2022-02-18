@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS brewit_db;
-CREATE DATABASE brewit_db;
+DROP DATABASE IF EXISTS brewit_db_test;
+CREATE DATABASE brewit_db_test;
 
-\c brewit_db;
+\c brewit_db_test;
 
 CREATE TABLE users (
     userid INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
