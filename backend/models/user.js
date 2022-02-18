@@ -5,7 +5,7 @@ const BCRYPT_WORK_FACTOR = 10;
 
 class User{
     static async register(data){
-        if(data.username.length < 1){
+        if(!data.username){
             const err = new Error(
                 "Username field cannot be blank"
             );
@@ -13,7 +13,7 @@ class User{
             throw err;
         };
 
-        if(data.password.length < 1){
+        if(!data.password){
             const err = new Error(
                 "Password field cannot be blank"
             );
