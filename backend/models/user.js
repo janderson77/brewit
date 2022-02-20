@@ -21,6 +21,14 @@ class User{
             throw err;
         };
 
+        if(data.username.length > 20){
+            const err =  new Error(
+                "Username cannot exceed 20 characters"
+            );
+            err.status = 400;
+            throw err;
+        }
+
         const duplicateUsernameCheck = await db.query(
             `SELECT username
             FROM users

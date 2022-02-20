@@ -124,5 +124,45 @@ describe('POST /users Registrations', () => {
 
         expect(res.statusCode).toBe(409);
         expect(res.body.message).toBe("This email address is already in use")
-    })
+    });
+
+    test('Does not create a user if username exceeds max length of 20', async() => {
+        let tooLongUser = {
+            username: "TestUser6959856465651616548489465168991",
+            password: "Testpassword1!",
+            email: "test5@test.com",
+            first_name: "James",
+            last_name: "Logan"
+        };
+
+        let justOver20User = {
+            username: "TestUser1234567891234",
+            password: "Testpassword1!",
+            email: "test6@test.com",
+            first_name: "James",
+            last_name: "Logan"
+        };
+
+        const res = await request(app).post('/users/register').send(tooLongUser);
+        const res2 = await request(app).post('/users/register').send(justOver20User);
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toBe("Username cannot exceed 20 characters");
+        expect(res2.statusCode).toBe(400);
+        expect(res2.body.message).toBe("Username cannot exceed 20 characters");
+    });
+
+    test('Does create a user if username matches max character length of 20', async() => {
+        let justRightUser = {
+            username: "TestUser123456789123",
+            password: "Testpassword1!",
+            email: "test7@test.com",
+            first_name: "James",
+            last_name: "Logan"
+        };
+
+        const res = await request(app).post('/users/register').send(justRightUser);
+
+        expect(res.statusCode).toBe(201);
+    });
 });
