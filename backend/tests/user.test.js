@@ -166,3 +166,13 @@ describe('POST /users Registrations', () => {
         expect(res.statusCode).toBe(201);
     });
 });
+
+describe('POST /users Authentication', () => {
+    test('Logs in a user', async () => {
+        const res = await request(app).post('/users/login').send({email: testUser.email, password: testUser.password})
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body).toHaveProperty('_token')
+        expect(res.body).not.toHaveProperty('password')
+    })
+});
