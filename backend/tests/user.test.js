@@ -108,7 +108,7 @@ describe('POST /users Registrations', () => {
         const res = await request(app).post('/users/register').send(sameUsernameUser);
 
         expect(res.statusCode).toBe(409);
-        expect(res.body.message).toBe("There already exists a user with username 'TestUser")
+        expect(res.body.message).toBe("There already exists a user with username 'TestUser");
     });
 
     test('Does not create a user if email is already in use', async() => {
@@ -123,7 +123,7 @@ describe('POST /users Registrations', () => {
         const res = await request(app).post('/users/register').send(sameEmailUser);
 
         expect(res.statusCode).toBe(409);
-        expect(res.body.message).toBe("This email address is already in use")
+        expect(res.body.message).toBe("This email address is already in use");
     });
 
     test('Does not create a user if username exceeds max length of 20', async() => {
@@ -169,10 +169,67 @@ describe('POST /users Registrations', () => {
 
 describe('POST /users Authentication', () => {
     test('Logs in a user', async () => {
-        const res = await request(app).post('/users/login').send({email: testUser.email, password: testUser.password})
+        const res = await request(app).post('/users/login').send({email: testUser.email, password: testUser.password});
 
-        expect(res.statusCode).toBe(200)
-        expect(res.body).toHaveProperty('_token')
-        expect(res.body).not.toHaveProperty('password')
-    })
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('password');
+    });
+
+    test('Does not log in a user with no email address', async () => {
+        const res = await request(app).post('/users/login').send({password: testUser.password});
+
+        expect(res.statusCode).not.toBe(200);
+        expect(res.statusCode).toBe(400);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body.message).toContain('instance requires property "email"' || 'Email Address field cannot be blank');
+    });
+
+    test('Does not log in a user with no password', async () => {
+        const res = await request(app).post('/users/login').send({email: testUser.email});
+
+        expect(res.statusCode).not.toBe(200);
+        expect(res.statusCode).toBe(400);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body.message).toContain('instance requires property "password"' || 'Password field cannot be blank');
+    });
+
+    test('Does not log in a user with no email address or password', async () => {
+        const res = await request(app).post('/users/login').send({});
+
+        expect(res.statusCode).not.toBe(200);
+        expect(res.statusCode).toBe(400);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body.message).toContain('instance requires property "password"' || 'Password field cannot be blank' || 'instance requires property "email"' || 'Email Address field cannot be blank');
+    });
+
+    test('Does not log in user with incorrect password', async () => {
+        const res = await request(app).post('/users/login').send({email: testUser.email, password: 'thisiswrong'});
+        
+        expect(res.statusCode).not.toBe(200);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('password');
+        expect(res.statusCode).toBe(401);
+        expect(res.body.message).toBe("Invalid Credentials");
+    });
+
+    test('Does not log in user with incorrect email address', async () => {
+        const res = await request(app).post('/users/login').send({email: "IamWrong@test.com", password: testUser.password});
+
+        expect(res.statusCode).not.toBe(200);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('password');
+        expect(res.statusCode).toBe(401);
+        expect(res.body.message).toBe("Invalid Credentials");
+    });
+
+    test('Does not log in user with incorrect email address and password', async () => {
+        const res = await request(app).post('/users/login').send({email: "IamWrong@test.com", password: 'thisiswrong'});
+
+        expect(res.statusCode).not.toBe(200);
+        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('password');
+        expect(res.statusCode).toBe(401);
+        expect(res.body.message).toBe("Invalid Credentials");
+    });
 });

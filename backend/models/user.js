@@ -5,6 +5,13 @@ const BCRYPT_WORK_FACTOR = 10;
 
 class User{
     static async register(data){
+        if(!data.email){
+            const err = new Error(
+                'Email Address field cannot be blank'
+            );
+            err.status = 400;
+            throw err;
+        }
         if(!data.username){
             const err = new Error(
                 "Username field cannot be blank"
@@ -83,6 +90,22 @@ class User{
     };
 
     static async authenticate(data) {
+        if(!data.email){
+            const err = new Error(
+                'Email Address field cannot be blank'
+            );
+            err.status = 400;
+            throw err;
+        }
+
+        if(!data.password){
+            const err = new Error(
+                "Password field cannot be blank"
+            );
+            err.status = 400;
+            throw err;
+        };
+
         const findUserResults = await db.query(
             `
             SELECT userid,
