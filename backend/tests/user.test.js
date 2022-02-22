@@ -17,7 +17,7 @@ let testUser = {
     last_name: "Logan"
 };
 
-describe('POST /users Registrations', () => {
+describe('POST /users Registration', () => {
     test('Creates a new user', async () => {
         const res = await request(app).post('/users/register').send(testUser);
         if(res.statusCode === 201){
