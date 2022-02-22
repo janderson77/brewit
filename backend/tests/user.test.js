@@ -3,6 +3,11 @@ const request = require('supertest');
 const app = require('../app');
 const db = require('../db');
 
+beforeAll(async () => {
+    await db.query('DELETE FROM users')
+    await db.query('ALTER SEQUENCE users_userid_seq RESTART WITH 1');
+});
+
 afterAll(async () => {
     await db.query('DELETE FROM users')
     await db.query('ALTER SEQUENCE users_userid_seq RESTART WITH 1');
