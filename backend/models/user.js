@@ -12,12 +12,14 @@ const userSchema = new Schema({
         match: [/.+\@.+\..+/, "Please enter a valid email address."],
         unique: true
     },
-    username: {
+    first_name: {
         type: String,
-        trim: true,
-        required: [true, "Please enter a username."],
-        unique: [true, "This username is already in use."]
+    },
+    last_name: {
+        type: String
     }
 });
+
+userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', userSchema)

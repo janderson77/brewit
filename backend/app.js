@@ -1,12 +1,34 @@
+// if(process.env.NODE_ENV !== "production"){
+//     require("dotenv").config();
+// };
 const express = require("express");
+const mongoose = require('mongoose');
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const User = require('./models/user')
+const userRoutes = require("./routes/users")
+
+const dbUrl = process.env.DB_URI || 'mongodb://localhost:27017/brewit';
+
+mongoose.connect(dbUrl);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+    console.log("Database connected");
+});
+
 const app = express();
 
 app.use(express.json());
 
+const secret = process.env.SECRET || "thisisasecretdonttellanyone"
+
 const morgan = require("morgan");
 app.use(morgan("tiny"));
 
-const userRoutes = require("./routes/users")
+app.use(passport.initialize());
+passport.use(new LocalStrategy(User.authenticate()));
 
 app.use('/users', userRoutes)
 
