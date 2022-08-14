@@ -1,16 +1,12 @@
-const {Client} = require("pg")
-const {DB_URI} = require("./config")
+const mongoose = require('mongoose');
+const {DB_URI} = require("./config");
 
-let client = new Client({
-    connectionString: DB_URI
+mongoose.connect(DB_URI).then(() => {
+    console.log("Connection made on " + DB_URI)
+}).catch(err => {
+    console.log(err)
 });
 
-if(!process.env.NODE_ENV === 'test'){
-    client.ssl = {
-        rejectUnauthorized: false
-    }
-}
-
-client.connect();
-
-module.exports = client;
+mongoose.connection.on('error', err => {
+    logError(err);
+});
