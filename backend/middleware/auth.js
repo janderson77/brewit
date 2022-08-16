@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const passportJwt = require('passport-jwt');
 const User = require('../models/user');
 const { SECRET } = require("../config");
-const { Passport } = require('passport');
 const jwtAlgorithm = 'HS256';
 const jwtExpiresIn = '7 days';
 
