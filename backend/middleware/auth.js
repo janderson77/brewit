@@ -69,7 +69,6 @@ const signJWTForUser = (req, res) => {
 module.exports = {
     initialize: passport.initialize(),
     register,
-    signIn: passport.authenticate('local', {session: false}),
     requireJWT: passport.authenticate('jwt', {session: false}),
     signJWTForUser
 }
