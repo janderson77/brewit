@@ -2,3 +2,4 @@ brewit_app.txt
 backend/node_modules
 backend/package-lock.json
 todo.md
+Express_Mongoose_Passport_JWT.md
