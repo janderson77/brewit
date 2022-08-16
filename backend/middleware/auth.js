@@ -12,9 +12,9 @@ passport.use(User.createStrategy());
 const register = async (req, res, next) => {
     if(req.body._token) delete req.body._token;
 
-    const {email, username, password} = req.body;
+    const {email, username, password, first_name, last_name} = req.body;
 
-    const user = new User({email, username});
+    const user = new User({email, username, first_name, last_name});
 
     try{
         const newUser = await User.register(user, password);
