@@ -10,7 +10,7 @@ const jwtExpiresIn = '7 days';
 passport.use(User.createStrategy());
 
 const register = async (req, res, next) => {
-    if(req.body._token) delete req.body._token;
+    if(req.body.token) delete req.body.token;
 
     const {email, username, password, first_name, last_name} = req.body;
 
