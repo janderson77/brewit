@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const authMiddleware = require('../middleware/auth')
 
 const User = require("../models/user");
 const { validate } = require("jsonschema");
@@ -8,21 +9,21 @@ const {userNewSchema, userAuthSchema} = require("../schemas/index");
 
 const createToken = require("../helpers/createToken")
 
-router.post("/register", async (req, res, next) => {
-    if(req.body._token) delete req.body._token;
+router.post("/register", authMiddleware.register, authMiddleware.signJWTForUser, (req, res, next) => {
+    // if(req.body._token) delete req.body._token;
 
-    const {email, username, password} = req.body;
+    // const {email, username, password} = req.body;
 
-    const user = new User({email, username});
+    // const user = new User({email, username});
 
-    try{
-        const newUser = await User.register(user, password);
-        const token = await createToken(newUser);
-        const newUserData = {id: newUser._id, _token: token, username};
-        return res.status(201).json(newUserData);
-    }catch(e){
-        return next(e)
-    }
+    // try{
+    //     const newUser = await User.register(user, password);
+    //     const token = await createToken(newUser);
+    //     const newUserData = {id: newUser._id, _token: token, username};
+    //     return res.status(201).json(newUserData);
+    // }catch(e){
+    //     return next(e)
+    // }
 });
 
 router.post("/login", async (req, res, next) =>{
