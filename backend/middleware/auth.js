@@ -8,6 +8,47 @@ const jwtExpiresIn = '7 days';
 
 passport.use(User.createStrategy());
 
+const isLoggedIn = (req, res, next) => {
+    if(!req.body.token){
+        return next({
+            status: 400,
+            message: "You must be logged in to do that."
+        });
+    };
+
+    next();
+};
+
+const ensureCorrectUser = async (req, res, next) => {
+    const { id } = req.params
+    if(!req.body.token){
+        return next({
+            status: 400,
+            message: "You must be logged in to do that."
+        });
+    };
+
+    try{
+        let token = jwt.verify(req.body.token, SECRET)
+        req.username = token.username
+
+        const user = await User.findById(id)
+        if(token.username === user.username){
+            delete user.hash
+            delete user.salt
+            req.user = user
+            return next();
+        };
+
+        throw new Error();
+    }catch(e){
+        const unauthorized = new Error("You are not authorized.");
+        unauthorized.status = 401;
+        return next(unauthorized)
+    }
+    
+}
+
 const register = async (req, res, next) => {
     if(req.body.token) delete req.body.token;
 
@@ -53,7 +94,8 @@ const signJWTForUser = (req, res) => {
     const user = req.user;
     const token = jwt.sign(
         {
-            email: user.email
+            email: user.email,
+            username: user.username
         },
         SECRET,
         {
@@ -71,5 +113,7 @@ module.exports = {
     initialize: passport.initialize(),
     register,
     requireJWT: passport.authenticate('jwt', {session: false}),
-    signJWTForUser
+    signJWTForUser,
+    isLoggedIn,
+    ensureCorrectUser
 }
