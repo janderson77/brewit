@@ -62,7 +62,9 @@ const signJWTForUser = (req, res) => {
             subject: user._id.toString()
         }
     )
-    res.json({token})
+    delete req.user._doc.hash
+    delete req.user._doc.salt
+    res.json({...req.user._doc, token})
 };
 
 module.exports = {
