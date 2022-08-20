@@ -1,6 +1,7 @@
 process.env.NODE_ENV = "test";
 const request = require('supertest');
 const app = require('../app');
+// !!!!!!! Need to update tests for mongoose !!!!!!!!!!
 const db = require('../db');
 
 beforeAll(async () => {
@@ -26,12 +27,12 @@ describe('POST /users Registration', () => {
     test('Creates a new user', async () => {
         const res = await request(app).post('/users/register').send(testUser);
         if(res.statusCode === 201){
-            testUser._token = res.body._token;
+            testUser.token = res.body.token;
         }else{
             console.log(res.body);
         }
         expect(res.statusCode).toBe(201);
-        expect(res.body).toHaveProperty('_token')
+        expect(res.body).toHaveProperty('token')
     });
 
     test('Does not create a user with no password', async() => {
@@ -177,7 +178,7 @@ describe('POST /users Authentication', () => {
         const res = await request(app).post('/users/login').send({email: testUser.email, password: testUser.password});
 
         expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('_token');
+        expect(res.body).toHaveProperty('token');
         expect(res.body).not.toHaveProperty('password');
     });
 
@@ -186,7 +187,7 @@ describe('POST /users Authentication', () => {
 
         expect(res.statusCode).not.toBe(200);
         expect(res.statusCode).toBe(400);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body.message).toContain('instance requires property "email"' || 'Email Address field cannot be blank');
     });
 
@@ -195,7 +196,7 @@ describe('POST /users Authentication', () => {
 
         expect(res.statusCode).not.toBe(200);
         expect(res.statusCode).toBe(400);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body.message).toContain('instance requires property "password"' || 'Password field cannot be blank');
     });
 
@@ -204,7 +205,7 @@ describe('POST /users Authentication', () => {
 
         expect(res.statusCode).not.toBe(200);
         expect(res.statusCode).toBe(400);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body.message).toContain('instance requires property "password"' || 'Password field cannot be blank' || 'instance requires property "email"' || 'Email Address field cannot be blank');
     });
 
@@ -212,7 +213,7 @@ describe('POST /users Authentication', () => {
         const res = await request(app).post('/users/login').send({email: testUser.email, password: 'thisiswrong'});
         
         expect(res.statusCode).not.toBe(200);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body).not.toHaveProperty('password');
         expect(res.statusCode).toBe(401);
         expect(res.body.message).toBe("Invalid Credentials");
@@ -222,7 +223,7 @@ describe('POST /users Authentication', () => {
         const res = await request(app).post('/users/login').send({email: "IamWrong@test.com", password: testUser.password});
 
         expect(res.statusCode).not.toBe(200);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body).not.toHaveProperty('password');
         expect(res.statusCode).toBe(401);
         expect(res.body.message).toBe("Invalid Credentials");
@@ -232,7 +233,7 @@ describe('POST /users Authentication', () => {
         const res = await request(app).post('/users/login').send({email: "IamWrong@test.com", password: 'thisiswrong'});
 
         expect(res.statusCode).not.toBe(200);
-        expect(res.body).not.toHaveProperty('_token');
+        expect(res.body).not.toHaveProperty('token');
         expect(res.body).not.toHaveProperty('password');
         expect(res.statusCode).toBe(401);
         expect(res.body.message).toBe("Invalid Credentials");
