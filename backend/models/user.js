@@ -22,7 +22,8 @@ const userSchema = new Schema({
     },
     last_name: {
         type: String
-    }
+    },
+    posts: [{type: mongoose.Schema.Types.ObjectId}]
 });
 
 userSchema.plugin(passportLocalMongoose);
