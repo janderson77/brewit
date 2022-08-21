@@ -5,8 +5,7 @@ const passport = require("passport");
 const { isLoggedIn } = require("../middleware/auth");
 const User = require("../models/user");
 
-router.post("/register", authMiddleware.register, authMiddleware.signJWTForUser, (req, res, next) => {
-});
+router.post("/register", authMiddleware.register, authMiddleware.signJWTForUser, (req, res, next) => {});
 
 router.post("/login", passport.authenticate('local', {session: false}), authMiddleware.signJWTForUser, (req, res, next) =>{})
 

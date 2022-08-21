@@ -7,10 +7,9 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRoutes = require("./routes/users")
+const { DB_URI } = require('./config')
 
-const dbUrl = process.env.DB_URI || 'mongodb://localhost:27017/brewit';
-
-mongoose.connect(dbUrl);
+mongoose.connect(DB_URI);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

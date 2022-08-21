@@ -54,14 +54,23 @@ const register = async (req, res, next) => {
 
     const {email, username, password, first_name, last_name} = req.body;
 
+    const dupCheck = await User.findOne({email});
+
+    if(dupCheck){
+        const duplicateError = new Error("This email is already in use");
+        return next(duplicateError);
+    }
+
     const user = new User({email, username, first_name, last_name});
 
     try{
         const newUser = await User.register(user, password);
         req.user = newUser;
+        res.statusCode = 201;
         next();
 
     }catch(e){
+        console.log(e)
         return next(e)
     }
 
