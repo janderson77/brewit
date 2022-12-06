@@ -19,6 +19,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
     await User.deleteMany({});
+    mongoose.disconnect()
 });
 
 let testUser = {
@@ -32,16 +33,16 @@ let testUser = {
 describe('POST /users Registration', () => {
     test('Creates a new user', async () => {
         const res = await request(app).post('/users/register').send(testUser);
-        if(res.statusCode === 201){
+        if (res.statusCode === 201) {
             testUser.token = res.body.token;
-        }else{
+        } else {
             console.log(res.body);
         }
         expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty('token')
     });
 
-    test('Does not create a user with no password', async() => {
+    test('Does not create a user with no password', async () => {
         let noPassUser = {
             username: "TestUser1",
             email: "test1@test.com",
@@ -54,7 +55,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe('No password was given');
     });
 
-    test('Does not create a user if password is blank', async() => {
+    test('Does not create a user if password is blank', async () => {
         let noPassUser = {
             username: "TestUser1",
             password: "",
@@ -69,7 +70,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe('No password was given');
     })
 
-    test('Does not create a user if no username', async() => {
+    test('Does not create a user if no username', async () => {
         let noUsernameUser = {
             password: "Testpassword1!",
             email: "test2@test.com",
@@ -82,7 +83,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe('No username was given');
     });
 
-    test('Does not create a user if username field is blank', async() => {
+    test('Does not create a user if username field is blank', async () => {
         let noUsernameUser = {
             username: "",
             password: "Testpassword1!",
@@ -96,7 +97,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe('No username was given');
     });
 
-    test('Does not create a user with no email', async() => {
+    test('Does not create a user with no email', async () => {
         let noEmailUser = {
             username: "TestUser3",
             password: "Testpassword1!",
@@ -109,7 +110,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe('User validation failed: email: Please enter an email address.');
     });
 
-    test('Does not create a user if username is already in use', async() => {
+    test('Does not create a user if username is already in use', async () => {
         let sameUsernameUser = {
             username: "TestUser",
             password: "Testpassword1!",
@@ -123,7 +124,7 @@ describe('POST /users Registration', () => {
         expect(res.body.message).toBe("A user with the given username is already registered");
     });
 
-    test('Does not create a user if email is already in use', async() => {
+    test('Does not create a user if email is already in use', async () => {
         let sameEmailUser = {
             username: "TestUser69598",
             password: "Testpassword1!",
@@ -181,7 +182,7 @@ describe('POST /users Registration', () => {
 
 describe('POST /users Authentication', () => {
     test('Logs in a user', async () => {
-        const res = await request(app).post('/users/login').send({username: testUser.username, password: testUser.password});
+        const res = await request(app).post('/users/login').send({ username: testUser.username, password: testUser.password });
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('token');
@@ -189,7 +190,7 @@ describe('POST /users Authentication', () => {
     });
 
     test('Does not log in a user with no email address', async () => {
-        const res = await request(app).post('/users/login').send({password: testUser.password});
+        const res = await request(app).post('/users/login').send({ password: testUser.password });
 
         expect(res.statusCode).not.toBe(200);
         expect(res.statusCode).toBe(400);
@@ -197,7 +198,7 @@ describe('POST /users Authentication', () => {
     });
 
     test('Does not log in a user with no password', async () => {
-        const res = await request(app).post('/users/login').send({username: testUser.username});
+        const res = await request(app).post('/users/login').send({ username: testUser.username });
 
         expect(res.statusCode).not.toBe(200);
         expect(res.statusCode).toBe(400);
@@ -213,8 +214,8 @@ describe('POST /users Authentication', () => {
     });
 
     test('Does not log in user with incorrect password', async () => {
-        const res = await request(app).post('/users/login').send({username: testUser.username, password: 'thisiswrong'});
-        
+        const res = await request(app).post('/users/login').send({ username: testUser.username, password: 'thisiswrong' });
+
         expect(res.statusCode).not.toBe(200);
         expect(res.body).not.toHaveProperty('token');
         expect(res.body).not.toHaveProperty('password');
@@ -222,7 +223,7 @@ describe('POST /users Authentication', () => {
     });
 
     test('Does not log in user with incorrect username', async () => {
-        const res = await request(app).post('/users/login').send({username: "IamWrong", password: testUser.password});
+        const res = await request(app).post('/users/login').send({ username: "IamWrong", password: testUser.password });
 
         expect(res.statusCode).not.toBe(200);
         expect(res.body).not.toHaveProperty('token');
@@ -231,7 +232,7 @@ describe('POST /users Authentication', () => {
     });
 
     test('Does not log in user with incorrect username and password', async () => {
-        const res = await request(app).post('/users/login').send({username: "IamWrong", password: 'thisiswrong'});
+        const res = await request(app).post('/users/login').send({ username: "IamWrong", password: 'thisiswrong' });
 
         expect(res.statusCode).not.toBe(200);
         expect(res.body).not.toHaveProperty('token');

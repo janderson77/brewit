@@ -9,7 +9,7 @@ let DB_URI;
 if (process.env.NODE_ENV === "test") {
   DB_URI = `mongodb://localhost:27017/brewit_test`;
 } else {
-  DB_URI  = process.env.DATABASE_URL || 'mongodb://localhost:27017/brewit';
+  DB_URI = process.env.DATABASE_URL || 'mongodb://localhost:27017/brewit';
 }
 
 console.log("Using database", DB_URI);

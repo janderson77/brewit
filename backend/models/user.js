@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
@@ -22,7 +22,8 @@ const userSchema = new Schema({
     last_name: {
         type: String
     },
-    posts: [{type: mongoose.Schema.Types.ObjectId}]
+    posts: [{ type: mongoose.Schema.Types.ObjectId }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId }]
 });
 
 userSchema.plugin(passportLocalMongoose);

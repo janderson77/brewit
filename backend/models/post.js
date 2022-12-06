@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const postSchema = new Schema({
     title: {
@@ -8,7 +8,7 @@ const postSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['mead', 'beer', 'wine', 'other'],
+        enum: ['mead', 'beer', 'wine', 'cider', 'other'],
         lowercase: true,
         required: true
     },
