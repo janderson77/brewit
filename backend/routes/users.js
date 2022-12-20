@@ -17,4 +17,15 @@ router.put('/:id', authMiddleware.ensureCorrectUser, async (req, res, next) => {
     return res.json(updatedUser)
 });
 
+router.delete('/:id/delete', authMiddleware.ensureCorrectUser, async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let deletedUser = await User.deleteOne({ id: id });
+        return res.json(deletedUser)
+    } catch (e) {
+        return next(e)
+    }
+
+});
+
 module.exports = router;
