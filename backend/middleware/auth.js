@@ -70,7 +70,6 @@ const register = async (req, res, next) => {
         next();
 
     } catch (e) {
-        console.log(e)
         return next(e)
     }
 
@@ -83,7 +82,19 @@ passport.use(
             secretOrKey: SECRET,
             algorithms: [jwtAlgorithm]
         },
-        (payload, done) => { }
+        (payload, done) => {
+            User.findById(payload.sub)
+                .then(user => {
+                    if (user) {
+                        done(null, user)
+                    } else {
+                        done(null, false)
+                    }
+                })
+                .catch(e => {
+                    done(e, false)
+                })
+        }
     )
 );
 
@@ -91,7 +102,7 @@ const signJWTForUser = (req, res) => {
     const user = req.user;
     const token = jwt.sign(
         {
-            email: user.email,
+            // email: user.email,
             username: user.username
         },
         SECRET,
